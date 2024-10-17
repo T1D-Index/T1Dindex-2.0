@@ -3,17 +3,18 @@ library(arrow)
 library(RPostgreSQL)
 library(dplyr)
 
-connec <- dbConnect(dbDriver("PostgreSQL"),  dbname = "t1d", host = "database-t1d-dev-2.ccasxjjwcbmy.ap-southeast-2.rds.amazonaws.com",
+
+connec <- dbConnect(dbDriver("PostgreSQL"),  dbname = "t1d", host = "lobalhost",
                     port = "5432",  user = "postgres",   password = "postgres")
 
 
 query_compose <-function(year,age_max,country)
-{  
-  query <- 
-          paste0('SELECT "Country", 
+{
+  query <-
+          paste0('SELECT "Country",
           ROUND( (percentile_cont(0.025) WITHIN GROUP (ORDER BY "Prevalence"))::numeric,0) as Prevalence_lower ,
           ROUND( (percentile_cont(0.5)   WITHIN GROUP (ORDER BY "Prevalence"))::numeric,0) as Prevalence_median ,
-          ROUND( (percentile_cont(0.975) WITHIN GROUP (ORDER BY "Prevalence"))::numeric,0) as Prevalence_upper 
+          ROUND( (percentile_cont(0.975) WITHIN GROUP (ORDER BY "Prevalence"))::numeric,0) as Prevalence_upper
           FROM
           (
           SELECT  "Country" , "run",SUM("Prevalence") as "Prevalence"
@@ -43,12 +44,12 @@ for(i in 1:nrow(table1))
     country_name <- table1$Country[i]
     country_name <- gsub("Taiwan","China, Taiwan Province of China",country_name)
     ci <- RPostgreSQL::dbGetQuery(connec, query_compose(year=table1$Year.of.data[i],age_max = table1$X[i], country=country_name) )
-    
+
     table1$Estimated.prevalence.ci.median[i] <- ci$prevalence_median
     table1$Estimated.prevalence.ci.interval[i] <- paste0("(95% CI ",ci$prevalence_lower,"-",ci$prevalence_upper, ")")
-    
+
   }
-  
+
 }
 
 

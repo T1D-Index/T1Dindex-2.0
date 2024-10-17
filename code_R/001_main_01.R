@@ -517,7 +517,6 @@ if(FALSE)
   # file_list_country_list <- "GLOBAL.binary"
   run_query_return_df_aws <- function(query)
   {
-    # host <- "database-t1d-dev-2.ccasxjjwcbmy.ap-southeast-2.rds.amazonaws.com"
     host <- "localhost"
     connec <- dbConnect(RPostgres::Postgres(),  dbname = "t1d", host = host,
                         port = "5432",  user = "postgres",   password = "postgrest1d")
@@ -533,7 +532,6 @@ if(FALSE)
     library(arrow)
     library(RPostgreSQL)
     library(dplyr)
-    # host <- "database-t1d-dev-2.ccasxjjwcbmy.ap-southeast-2.rds.amazonaws.com"
     host <- "localhost"
     connec <- dbConnect(RPostgres::Postgres(),  dbname = "t1d", host = host,
                         port = "5432",  user = "postgres",   password = "postgrest1d")
