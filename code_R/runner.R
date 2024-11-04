@@ -1,9 +1,27 @@
 
 refresh_one_country_file <- function(
     partition_id,data_dir,cache_dir, start_year=1960, end_year=2040,use_3d_array=TRUE,run_type="national"
-) {  # start_year=1960; end_year=2040 ; run_sim=TRUE
+) {  # start_year=1960; end_year=2040 ; run_sim=TRUE ; partition_id <- "partition_1"
   source('code_R/prevalence_utils.R')
   source('code_R/001_main_util.R')
+
+  # Load Library ---------------------------------------------------------------------------------------
+  library(arrow)
+  # library(data.table)
+  library(dplyr)
+  library(abind)
+  library(stringr)
+  library(parallel)
+
+  # Load Dependency ---------------------------------------------------------------------------------------
+
+  source("code_R/refresh_country_files_tensor.R")
+  source("code_R/refresh_country_files_tensor_utils.R")
+  source("code_R/utils.R")
+  source("code_R/data.R")
+  source("code_R/runner.R")
+
+
   # country_code <- countries$world_bank_code[countries$world_bank_name==country_wb_name]
   # cache_file   <- file.path(cache_dir, paste0(country_code, ".binary"))
   # log_timing <- grepl("mcmc_1_0\\/AFG\\.binary",cache_file )
@@ -11,7 +29,7 @@ refresh_one_country_file <- function(
 
   # country_name <- country_name_list[1]
   # library(RSQLite)
-  library(dplyr)
+  # library(dplyr)
   # library(tidyr)
   # library(arrow)
   Log=function(fmt, ...) { cat(sprintf(paste0(fmt, '\n'), ...)) }
