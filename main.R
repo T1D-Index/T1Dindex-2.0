@@ -30,11 +30,13 @@ system.time(
 # Parallel ---------------------------------------------------------------------------
 data_dir <- "data_prep_temp/inputs_national_v_2_0/"
 cache_dir <- "data_prep_temp/inputs_national_v_2_0_output/"
+dir.create(cache_dir)
+
 loc_id_input_list <-list.files(data_dir)
 
 Log=function(fmt, ...) { cat(sprintf(paste0(fmt, '\n'), ...)) }
 
-num_thread <- 15
+num_thread <- 16
 clust <- parallel::makeCluster(num_thread, setup_strategy = "sequential", outfile="makeCluster_Log.txt")
 clusterExport(cl=clust, varlist=c('Log','setDF','rbindlist','setDT','str_extract','read_feather'
                                   ,'cache_dir','data_dir','run_query_df',"adrop"
